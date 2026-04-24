@@ -4,6 +4,7 @@ class Product {
   final String beauty;
   final double price;
   final double raiting;
+  final double discountPercentage;
   final String brand;
   final List<String> image;
 
@@ -13,6 +14,7 @@ class Product {
     required this.beauty,
     required this.price,
     required this.raiting,
+    required this.discountPercentage,
     required this.brand,
     required this.image,
   });
