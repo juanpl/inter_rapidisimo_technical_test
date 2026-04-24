@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:inter_rapidisimo_technical_test/injection_container.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  initInjectionContainer();
   runApp(const MainApp());
 }
 
