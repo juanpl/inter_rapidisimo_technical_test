@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:inter_rapidisimo_technical_test/config/configuration.dart';
 import 'package:inter_rapidisimo_technical_test/config/schema_configuration.dart';
 import 'package:inter_rapidisimo_technical_test/core/api/api_client.dart';
-import 'package:inter_rapidisimo_technical_test/core/error/custom_exception.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/data/datasources/product_catalog_datasource.dart';
 
 void main() {
@@ -45,13 +44,18 @@ void main() {
     });
 
     test('respeta el parámetro offset', () async {
-      final resultPage1 = await datasource.getProductCatalog(limit: 1, offset: 0);
-      final resultPage2 = await datasource.getProductCatalog(limit: 1, offset: 1);
+      final resultPage1 = await datasource.getProductCatalog(
+        limit: 1,
+        offset: 0,
+      );
+      final resultPage2 = await datasource.getProductCatalog(
+        limit: 1,
+        offset: 1,
+      );
 
       final firstProduct = (resultPage1['products'] as List).first;
       final secondProduct = (resultPage2['products'] as List).first;
       expect(firstProduct['id'], isNot(equals(secondProduct['id'])));
     });
-
   });
 }
