@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:inter_rapidisimo_technical_test/features/product_catalog/data/model/product_catalog_model.dart';
+import 'package:inter_rapidisimo_technical_test/features/product_catalog/data/models/product_model.dart';
 
 void main() {
   const tJson = {
@@ -17,7 +17,7 @@ void main() {
     ],
   };
 
-  final tModel = ProductCatalogModel(
+  final tModel = ProductModel(
     id: 1,
     title: 'Essence Mascara Lash Princess',
     description: 'The Essence Mascara Lash Princess',
@@ -32,10 +32,10 @@ void main() {
     ],
   );
 
-  group('ProductCatalogModel', () {
+  group('ProductModel', () {
     group('fromJson', () {
       test('crea el modelo correctamente desde un JSON válido', () {
-        final result = ProductCatalogModel.fromJson(tJson);
+        final result = ProductModel.fromJson(tJson);
 
         expect(result.id, equals(1));
         expect(result.title, equals('Essence Mascara Lash Princess'));
@@ -49,15 +49,21 @@ void main() {
       });
 
       test('images es una lista de Strings', () {
-        final result = ProductCatalogModel.fromJson(tJson);
+        final result = ProductModel.fromJson(tJson);
 
         expect(result.images, isA<List<String>>());
       });
 
       test('brand se mapea desde la clave brand del JSON', () {
-        final result = ProductCatalogModel.fromJson(tJson);
+        final result = ProductModel.fromJson(tJson);
 
         expect(result.brand, equals(tJson['brand']));
+      });
+
+      test('raiting se mapea desde la clave rating del JSON', () {
+        final result = ProductModel.fromJson(tJson);
+
+        expect(result.raiting, equals(tJson['rating']));
       });
     });
 
@@ -77,10 +83,11 @@ void main() {
         expect(result['discountPercentage'], equals(7.17));
         expect(result['brand'], equals('Essence'));
         expect(result['images'], isA<List<String>>());
+        expect(result['images'], equals(tModel.images));
       });
 
       test('fromJson y toJson son consistentes', () {
-        final model = ProductCatalogModel.fromJson(tJson);
+        final model = ProductModel.fromJson(tJson);
         final result = model.toJson();
 
         expect(result['id'], equals(tJson['id']));
