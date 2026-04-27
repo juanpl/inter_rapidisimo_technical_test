@@ -3,4 +3,5 @@ import 'package:inter_rapidisimo_technical_test/config/configuration_prod/config
 
 Future<void> main() async {
   Configuration.config = ConfigurationProd().config;
+  main();
 }

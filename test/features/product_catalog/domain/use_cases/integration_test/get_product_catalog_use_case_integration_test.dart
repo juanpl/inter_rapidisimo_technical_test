@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:inter_rapidisimo_technical_test/config/configuration.dart';
 import 'package:inter_rapidisimo_technical_test/config/schema_configuration.dart';
 import 'package:inter_rapidisimo_technical_test/core/api/api_client.dart';
+import 'package:inter_rapidisimo_technical_test/core/ui_system/colors/application_colors.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/data/datasources/product_catalog_datasource.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/data/repository_impl/product_catalog_repository_impl.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/domain/entities/product_catalog_entity.dart';
@@ -17,6 +18,7 @@ void main() {
     Configuration.config = SchemaConfiguration(
       appName: 'Test',
       companyName: 'Test',
+      appColors: ApplicationColors(),
       endpoints: ConfigurationEndpoints(
         productEndPoint: 'https://dummyjson.com/products',
       ),
