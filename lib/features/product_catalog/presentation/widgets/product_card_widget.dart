@@ -3,7 +3,7 @@ import 'package:inter_rapidisimo_technical_test/core/ui_system/widget/image_prod
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/widgets/price_with_dicount_widget.dart';
 
 import 'brand_text_widget.dart';
-import 'buy_button_widget.dart';
+import 'cart_control_widget.dart';
 import 'discount_tag_widget.dart';
 import 'price_with_out_discount_widget.dart';
 import 'rating_bar_indicator_card_widget.dart';
@@ -19,6 +19,10 @@ class ProductCardWidget extends StatelessWidget {
     required this.discountedPrice,
     required this.discountPercentage,
     required this.brand,
+    required this.cartQuantity,
+    required this.isCartLoading,
+    required this.onAddToCart,
+    required this.onRemoveFromCart,
   });
 
   final String imageUrl;
@@ -28,6 +32,10 @@ class ProductCardWidget extends StatelessWidget {
   final double discountedPrice;
   final double discountPercentage;
   final String brand;
+  final int cartQuantity;
+  final bool isCartLoading;
+  final VoidCallback onAddToCart;
+  final VoidCallback onRemoveFromCart;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +70,12 @@ class ProductCardWidget extends StatelessWidget {
             const SizedBox(height: 6),
             BrandTextWidget(brand: brand),
             const Spacer(),
-            BuyButtonWidget(),
+            CartControlWidget(
+              quantity: cartQuantity,
+              isLoading: isCartLoading,
+              onAdd: onAddToCart,
+              onRemove: onRemoveFromCart,
+            ),
           ],
         ),
       ),

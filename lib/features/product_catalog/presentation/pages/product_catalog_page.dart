@@ -57,6 +57,7 @@ class _ProductCatalogPageState extends ConsumerState<ProductCatalogPage> {
             onRefresh: () => ref
                 .read(productCatalogProvider.notifier)
                 .add(const RefreshProductCatalog()),
+            onEvent: ref.read(productCatalogProvider.notifier).add,
           ),
           ProductCatalogError() => _ErrorBody(
             message: state.message,
@@ -92,11 +93,13 @@ class _SuccessBody extends StatelessWidget {
     required this.state,
     required this.scrollController,
     required this.onRefresh,
+    required this.onEvent,
   });
 
   final ProductCatalogSuccess state;
   final ScrollController scrollController;
   final VoidCallback onRefresh;
+  final void Function(ProductCatalogEvent) onEvent;
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +121,10 @@ class _SuccessBody extends StatelessWidget {
                   discountedPrice: product.discountedPrice,
                   discountPercentage: product.discountPercentage,
                   brand: product.brand,
+                  cartQuantity: state.cartQuantity(product.id),
+                  isCartLoading: state.isProductLoading(product.id),
+                  onAddToCart: () => onEvent(AddToCart(product)),
+                  onRemoveFromCart: () => onEvent(RemoveFromCart(product)),
                 );
               }, childCount: state.products.length),
               gridDelegate: _gridDelegate,
