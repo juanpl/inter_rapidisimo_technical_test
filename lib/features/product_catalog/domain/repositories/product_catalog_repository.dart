@@ -2,4 +2,5 @@ import 'package:inter_rapidisimo_technical_test/features/product_catalog/domain/
 
 abstract interface class ProductCatalogRepository {
   Future<ProductCatalogEntity> getProductCatalog(int limit, int offset);
+  Future<ProductCatalogEntity> searchProducts(String query);
 }

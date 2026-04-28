@@ -26,4 +26,17 @@ class ProductCatalogDatasource {
       throw CustomException(message: 'Error inesperado', code: 'UNKNOWN');
     }
   }
+
+  Future<Map<String, dynamic>> searchProducts({required String query}) async {
+    try {
+      final response = await _apiClient.get(
+        '${Configuration.config.endpoints.productEndPoint}/search?q=$query',
+      );
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw _apiClient.handleError(e);
+    } catch (_) {
+      throw CustomException(message: 'Error inesperado', code: 'UNKNOWN');
+    }
+  }
 }
