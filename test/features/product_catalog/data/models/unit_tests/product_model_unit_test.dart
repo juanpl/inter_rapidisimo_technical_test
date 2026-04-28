@@ -23,7 +23,7 @@ void main() {
     description: 'The Essence Mascara Lash Princess',
     category: 'beauty',
     price: 9.99,
-    raiting: 4.94,
+    rating: 4.94,
     discountPercentage: 7.17,
     brand: 'Essence',
     images: [
@@ -42,7 +42,7 @@ void main() {
         expect(result.description, equals('The Essence Mascara Lash Princess'));
         expect(result.category, equals('beauty'));
         expect(result.price, equals(9.99));
-        expect(result.raiting, equals(4.94));
+        expect(result.rating, equals(4.94));
         expect(result.discountPercentage, equals(7.17));
         expect(result.brand, equals('Essence'));
         expect(result.images.length, equals(2));
@@ -60,10 +60,10 @@ void main() {
         expect(result.brand, equals(tJson['brand']));
       });
 
-      test('raiting se mapea desde la clave rating del JSON', () {
+      test('rating se mapea desde la clave rating del JSON', () {
         final result = ProductModel.fromJson(tJson);
 
-        expect(result.raiting, equals(tJson['rating']));
+        expect(result.rating, equals(tJson['rating']));
       });
     });
 
@@ -79,7 +79,7 @@ void main() {
         );
         expect(result['category'], equals('beauty'));
         expect(result['price'], equals(9.99));
-        expect(result['raiting'], equals(4.94));
+        expect(result['rating'], equals(4.94));
         expect(result['discountPercentage'], equals(7.17));
         expect(result['brand'], equals('Essence'));
         expect(result['images'], isA<List<String>>());

@@ -7,7 +7,7 @@ class BrandTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Marca: $brand',
+      'Marca: ${brand.isEmpty ? 'No tiene' : brand}',
       style: const TextStyle(fontSize: 11, color: Colors.black54),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,

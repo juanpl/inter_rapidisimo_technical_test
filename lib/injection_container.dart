@@ -4,6 +4,8 @@ import 'package:inter_rapidisimo_technical_test/core/api/api_client.dart';
 import 'package:inter_rapidisimo_technical_test/core/database/sqlite_db.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/product_catalog_injection_container.dart';
 
+import 'features/cart/cart_injection_container.dart';
+
 final getIt = GetIt.instance;
 
 void initInjectionContainer() {
@@ -11,4 +13,5 @@ void initInjectionContainer() {
   getIt.registerLazySingleton<SqliteDB>(() => SqliteDB());
 
   productCatalogInjectionContainer(getIt);
+  cartInjectionContainer(getIt);
 }

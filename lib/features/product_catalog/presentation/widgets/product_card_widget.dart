@@ -47,15 +47,17 @@ class ProductCardWidget extends StatelessWidget {
             TitleCardWidget(title: title),
             const SizedBox(height: 4),
             RatingBarIndicatorCardWidget(rating: rating),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                PriceWithOutDiscountWidget(price: price),
-                const SizedBox(width: 8),
-                DiscountTagWidget(discountPercentage: discountPercentage),
-              ],
-            ),
-            const SizedBox(height: 4),
+            if (discountPercentage.round() > 0) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  PriceWithOutDiscountWidget(price: price),
+                  const SizedBox(width: 8),
+                  DiscountTagWidget(discountPercentage: discountPercentage),
+                ],
+              ),
+              const SizedBox(height: 4),
+            ],
             PriceWithDicountWidget(discountedPrice: discountedPrice),
             const SizedBox(height: 6),
             BrandTextWidget(brand: brand),

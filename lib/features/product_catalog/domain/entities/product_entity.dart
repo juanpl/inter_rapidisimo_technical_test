@@ -6,7 +6,7 @@ class ProductEntity {
   final String description;
   final String category;
   final double price;
-  final double raiting;
+  final double rating;
   final double discountPercentage;
   final String brand;
   final List<String> images;
@@ -18,7 +18,7 @@ class ProductEntity {
     required this.category,
     required this.description,
     required this.price,
-    required this.raiting,
+    required this.rating,
     required this.discountPercentage,
     required this.brand,
     required this.images,
@@ -31,7 +31,7 @@ class ProductEntity {
     String? description,
     String? category,
     double? price,
-    double? raiting,
+    double? rating,
     double? discountPercentage,
     String? brand,
     List<String>? images,
@@ -42,7 +42,7 @@ class ProductEntity {
     description: description ?? this.description,
     category: category ?? this.category,
     price: price ?? this.price,
-    raiting: raiting ?? this.raiting,
+    rating: rating ?? this.rating,
     discountPercentage: discountPercentage ?? this.discountPercentage,
     brand: brand ?? this.brand,
     images: images ?? this.images,
@@ -55,7 +55,7 @@ class ProductEntity {
     category: model.category,
     description: model.description,
     price: model.price,
-    raiting: model.raiting,
+    rating: model.rating,
     discountPercentage: model.discountPercentage,
     brand: model.brand,
     images: model.images,

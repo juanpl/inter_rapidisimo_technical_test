@@ -49,8 +49,8 @@ class _ProductCatalogPageState extends ConsumerState<ProductCatalogPage> {
     return Scaffold(
       body: SafeArea(
         child: switch (state) {
-          ProductCatalogInitial() || ProductCatalogLoading() =>
-            const _ShimmerGrid(),
+          ProductCatalogInitial() ||
+          ProductCatalogLoading() => const _ShimmerGrid(),
           ProductCatalogSuccess() => _SuccessBody(
             state: state,
             scrollController: _scrollController,
@@ -108,21 +108,18 @@ class _SuccessBody extends StatelessWidget {
           controller: scrollController,
           slivers: [
             SliverGrid(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final product = state.products[index];
-                  return ProductCardWidget(
-                    imageUrl: product.images.first,
-                    title: product.title,
-                    rating: product.raiting,
-                    price: product.price,
-                    discountedPrice: product.discountedPrice,
-                    discountPercentage: product.discountPercentage,
-                    brand: product.brand,
-                  );
-                },
-                childCount: state.products.length,
-              ),
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final product = state.products[index];
+                return ProductCardWidget(
+                  imageUrl: product.images.first,
+                  title: product.title,
+                  rating: product.rating,
+                  price: product.price,
+                  discountedPrice: product.discountedPrice,
+                  discountPercentage: product.discountPercentage,
+                  brand: product.brand,
+                );
+              }, childCount: state.products.length),
               gridDelegate: _gridDelegate,
             ),
             if (state.isLoadingMore)
@@ -162,10 +159,7 @@ class _ErrorBody extends StatelessWidget {
           const SizedBox(height: 16),
           Text(message, textAlign: TextAlign.center),
           const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: onRetry,
-            child: const Text('Reintentar'),
-          ),
+          ElevatedButton(onPressed: onRetry, child: const Text('Reintentar')),
         ],
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:inter_rapidisimo_technical_test/features/cart/data/repository_impl/cart_product_model.dart';
+import 'package:inter_rapidisimo_technical_test/features/cart/data/models/cart_product_model.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/domain/entities/product_entity.dart';
 
 class CartProductEntity {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:inter_rapidisimo_technical_test/core/database/sqlite_db.dart';
@@ -6,7 +8,7 @@ import 'package:inter_rapidisimo_technical_test/features/product_catalog/data/mo
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
-  late CartLocalDatasource datasource;
+  late LocalDatasource datasource;
 
   setUpAll(() {
     sqfliteFfiInit();
@@ -16,8 +18,10 @@ void main() {
 
   tearDownAll(() => GetIt.I.reset());
 
-  setUp(() {
-    datasource = CartLocalDatasource();
+  setUp(() async {
+    datasource = LocalDatasource();
+    final db = await GetIt.I<SqliteDB>().database;
+    await db.delete('cart');
   });
 
   final product = ProductModel(
@@ -26,11 +30,17 @@ void main() {
     description: 'Desc',
     category: 'Cat',
     price: 10.0,
-    raiting: 4.5,
+    rating: 4.5,
     discountPercentage: 10.0,
     brand: 'Brand',
     images: ['img1.jpg'],
   );
+
+  Map<String, dynamic> buildCartJson(ProductModel p, int quantity) => {
+    'product_id': p.id,
+    'product_json': jsonEncode(p.toJson()),
+    'quantity': quantity,
+  };
 
   group('CartLocalDatasource - integración', () {
     test('getCart retorna lista vacía inicialmente', () async {
@@ -39,7 +49,7 @@ void main() {
     });
 
     test('addProduct agrega un producto al carrito', () async {
-      await datasource.addProduct(product, 2);
+      await datasource.addProduct(buildCartJson(product, 2), 2);
       final cart = await datasource.getCart();
 
       expect(cart.length, equals(1));
@@ -48,29 +58,35 @@ void main() {
     });
 
     test('addProduct acumula cantidad si el producto ya existe', () async {
-      await datasource.addProduct(product, 3);
+      await datasource.addProduct(buildCartJson(product, 2), 2);
+      await datasource.addProduct(buildCartJson(product, 3), 3);
       final cart = await datasource.getCart();
 
       expect(cart.first['quantity'], equals(5)); // 2 + 3
     });
 
     test('removeProduct reduce la cantidad', () async {
-      await datasource.removeProduct(product, 2);
+      await datasource.addProduct(buildCartJson(product, 5), 5);
+      await datasource.removeProduct(buildCartJson(product, 2), 2);
       final cart = await datasource.getCart();
 
       expect(cart.first['quantity'], equals(3));
     });
 
-    test('removeProduct elimina el producto si la cantidad llega a 0', () async {
-      await datasource.removeProduct(product, 3);
-      final cart = await datasource.getCart();
+    test(
+      'removeProduct elimina el producto si la cantidad llega a 0',
+      () async {
+        await datasource.addProduct(buildCartJson(product, 3), 3);
+        await datasource.removeProduct(buildCartJson(product, 3), 3);
+        final cart = await datasource.getCart();
 
-      expect(cart, isEmpty);
-    });
+        expect(cart, isEmpty);
+      },
+    );
 
     test('removeProduct no falla si el producto no existe', () async {
       await expectLater(
-        datasource.removeProduct(product, 1),
+        datasource.removeProduct(buildCartJson(product, 1), 1),
         completes,
       );
     });
