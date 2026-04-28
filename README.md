@@ -66,10 +66,8 @@ flutter test test/features/cart/domain/use_cases/integration_test/ \
 
 3. **Sin autenticación**: la API no requiere tokens, por lo que no se implementó almacenamiento seguro de credenciales.
 
-4. **Haptic feedback omitido**: el feedback táctil al agregar al carrito no fue implementado. Se priorizó la cobertura de tests y la solidez arquitectónica.
+4. **Entidades de dominio sin `freezed`**: las entidades son clases Dart puras de forma intencional; `freezed` se usa solo en los modelos de la capa `data` para no introducir dependencias externas en el dominio.
 
-5. **Entidades de dominio sin `freezed`**: las entidades son clases Dart puras de forma intencional; `freezed` se usa solo en los modelos de la capa `data` para no introducir dependencias externas en el dominio.
+5. **`discountedPrice` calculado en el use case**: el campo no viene de la API. Se calcula como `price * (1 - discountPercentage / 100)` redondeado a 2 decimales. No se aplican impuestos adicionales al no estar definidos en el contrato de la API.
 
-6. **`discountedPrice` calculado en el use case**: el campo no viene de la API. Se calcula como `price * (1 - discountPercentage / 100)` redondeado a 2 decimales. No se aplican impuestos adicionales al no estar definidos en el contrato de la API.
-
-7. **Tests de integración SQLite con `--concurrency=1`**: múltiples isolates accediendo al mismo archivo SQLite en paralelo generan condiciones de carrera; la bandera lo evita.
+6. **Tests de integración SQLite con `--concurrency=1`**: múltiples isolates accediendo al mismo archivo SQLite en paralelo generan condiciones de carrera; la bandera lo evita.

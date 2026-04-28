@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:inter_rapidisimo_technical_test/core/ui_system/colors/application_colors.dart';
 
 class CartControlWidget extends StatelessWidget {
@@ -30,7 +31,10 @@ class CartControlWidget extends StatelessWidget {
       return SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: onAdd,
+          onPressed: () {
+            HapticFeedback.heavyImpact();
+            onAdd();
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: ApplicationColors.primerBrandColor,
             padding: const EdgeInsets.symmetric(vertical: 8),
