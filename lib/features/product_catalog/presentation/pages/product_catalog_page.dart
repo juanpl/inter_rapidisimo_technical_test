@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/events/product_catalog_event.dart';
-import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/providers/product_catalog_provider.dart';
-import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/states/product_catalog_state.dart';
+import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/events/product_catalog_event.dart';
+import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/providers/product_catalog_provider.dart';
+import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/states/product_catalog_state.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/widgets/product_card_shimmer_widget.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/widgets/product_card_widget.dart';
 

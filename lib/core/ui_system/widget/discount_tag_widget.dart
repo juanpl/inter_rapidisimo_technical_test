@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
 class DiscountTagWidget extends StatelessWidget {
-  final double discountPercentage;
+  const DiscountTagWidget({
+    super.key,
+    required this.discountPercentage,
+    this.fontSize = 11,
+  });
 
-  const DiscountTagWidget({super.key, required this.discountPercentage});
+  final double discountPercentage;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +20,9 @@ class DiscountTagWidget extends StatelessWidget {
       ),
       child: Text(
         '-${discountPercentage.toStringAsFixed(0)}%',
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
-          fontSize: 11,
+          fontSize: fontSize,
           fontWeight: FontWeight.bold,
         ),
       ),

@@ -8,6 +8,19 @@ class GetCartUseCase {
   GetCartUseCase() : _repository = GetIt.I<CartRepository>();
 
   Future<List<CartProductEntity>> call() async {
-    return _repository.getCart();
+    final items = await _repository.getCart();
+    return items
+        .map(
+          (item) => item.copyWith(
+            product: item.product.copyWith(
+              discountedPrice: double.parse(
+                (item.product.price *
+                        (1 - item.product.discountPercentage / 100))
+                    .toStringAsFixed(2),
+              ),
+            ),
+          ),
+        )
+        .toList();
   }
 }

@@ -9,8 +9,8 @@ import 'package:inter_rapidisimo_technical_test/features/cart/domain/use_cases/g
 import 'package:inter_rapidisimo_technical_test/features/cart/domain/use_cases/remove_product_from_cart_use_case.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/domain/entities/product_entity.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/domain/use_cases/get_product_catalog_use_case.dart';
-import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/events/product_catalog_event.dart';
-import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/states/product_catalog_state.dart';
+import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/events/product_catalog_event.dart';
+import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/states/product_catalog_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _limit = 10;
@@ -37,6 +37,8 @@ class ProductCatalogNotifier extends Notifier<ProductCatalogState> {
         await _onAddToCart(product);
       case RemoveFromCart(:final product):
         await _onRemoveFromCart(product);
+      case ReloadCart():
+        await _onReloadCart();
     }
   }
 
@@ -97,6 +99,13 @@ class ProductCatalogNotifier extends Notifier<ProductCatalogState> {
   Future<void> _onRefresh() async {
     _currentOffset = 0;
     await _onLoad();
+  }
+
+  Future<void> _onReloadCart() async {
+    final current = state;
+    if (current is! ProductCatalogSuccess) return;
+    final cartProducts = await _fetchCartProducts();
+    state = current.copyWith(cartProducts: cartProducts);
   }
 
   Future<List<CartProductEntity>> _fetchCartProducts() async {

@@ -25,3 +25,7 @@ class RemoveFromCart extends ProductCatalogEvent {
   const RemoveFromCart(this.product);
   final ProductEntity product;
 }
+
+class ReloadCart extends ProductCatalogEvent {
+  const ReloadCart();
+}
