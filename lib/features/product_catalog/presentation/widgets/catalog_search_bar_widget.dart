@@ -25,14 +25,19 @@ class CatalogSearchBarWidget extends StatelessWidget {
             hintText: 'Buscar productos...',
             prefixIcon: const Icon(Icons.search),
             suffixIcon: value.text.isNotEmpty
-                ? IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: onClear,
-                  )
+                ? IconButton(icon: const Icon(Icons.close), onPressed: onClear)
                 : null,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide.none,
+              borderSide: const BorderSide(color: Colors.black, width: 0.5),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.black, width: 0.5),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: const BorderSide(color: Colors.black, width: 1),
             ),
             filled: true,
             fillColor: Colors.grey.shade100,

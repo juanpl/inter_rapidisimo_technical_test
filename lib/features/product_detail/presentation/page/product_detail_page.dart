@@ -124,6 +124,7 @@ class _SuccessBody extends StatelessWidget {
                     isLoading: state.isCartLoading,
                     onAdd: onAdd,
                     onRemove: onRemove,
+                    addLabel: 'Agregar al carrito',
                   ),
                 ),
                 const SizedBox(height: 8),
