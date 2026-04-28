@@ -20,7 +20,7 @@ void main() {
     description: 'Test',
     category: 'beauty',
     price: 10.00,
-    raiting: 4.5,
+    rating: 4.5,
     discountPercentage: 10.0,
     brand: 'Essence',
     images: ['https://cdn.dummyjson.com/1.webp'],
@@ -46,8 +46,9 @@ void main() {
 
   group('GetProductCatalogUseCase', () {
     test('calcula discountedPrice redondeado a 2 decimales', () async {
-      when(() => mockRepository.getProductCatalog(any(), any()))
-          .thenAnswer((_) async => tCatalog);
+      when(
+        () => mockRepository.getProductCatalog(any(), any()),
+      ).thenAnswer((_) async => tCatalog);
 
       final result = await useCase(10, 0);
 
@@ -55,29 +56,36 @@ void main() {
     });
 
     test('lanza CustomException cuando el repositorio falla', () {
-      when(() => mockRepository.getProductCatalog(any(), any()))
-          .thenThrow(const CustomException(message: 'Sin conexión', code: 'NO_CONNECTION'));
+      when(() => mockRepository.getProductCatalog(any(), any())).thenThrow(
+        const CustomException(message: 'Sin conexión', code: 'NO_CONNECTION'),
+      );
 
       expect(
         () => useCase(10, 0),
-        throwsA(isA<CustomException>().having((e) => e.code, 'code', 'NO_CONNECTION')),
+        throwsA(
+          isA<CustomException>().having((e) => e.code, 'code', 'NO_CONNECTION'),
+        ),
       );
     });
 
-    test('retorna catalog con discountedPrice en todos los productos', () async {
-      final catalogWithMultiple = tCatalog.copyWith(
-        products: [
-          tProduct,
-          tProduct.copyWith(id: 2, price: 20.00, discountPercentage: 20.0),
-        ],
-      );
-      when(() => mockRepository.getProductCatalog(any(), any()))
-          .thenAnswer((_) async => catalogWithMultiple);
+    test(
+      'retorna catalog con discountedPrice en todos los productos',
+      () async {
+        final catalogWithMultiple = tCatalog.copyWith(
+          products: [
+            tProduct,
+            tProduct.copyWith(id: 2, price: 20.00, discountPercentage: 20.0),
+          ],
+        );
+        when(
+          () => mockRepository.getProductCatalog(any(), any()),
+        ).thenAnswer((_) async => catalogWithMultiple);
 
-      final result = await useCase(10, 0);
+        final result = await useCase(10, 0);
 
-      expect(result.products[0].discountedPrice, equals(9.00));
-      expect(result.products[1].discountedPrice, equals(16.00));
-    });
+        expect(result.products[0].discountedPrice, equals(9.00));
+        expect(result.products[1].discountedPrice, equals(16.00));
+      },
+    );
   });
 }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:inter_rapidisimo_technical_test/core/ui_system/widget/brand_text_widget.dart';
+import 'package:inter_rapidisimo_technical_test/core/ui_system/widget/cart_control_widget.dart';
+import 'package:inter_rapidisimo_technical_test/core/ui_system/widget/discount_tag_widget.dart';
 import 'package:inter_rapidisimo_technical_test/core/ui_system/widget/image_product_widget.dart';
-import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/widgets/price_with_dicount_widget.dart';
-
-import 'brand_text_widget.dart';
-import 'buy_button_widget.dart';
-import 'discount_tag_widget.dart';
-import 'price_with_out_discount_widget.dart';
-import 'rating_bar_indicator_card_widget.dart';
-import 'title_card_widget.dart';
+import 'package:inter_rapidisimo_technical_test/core/ui_system/widget/price_with_dicount_widget.dart';
+import 'package:inter_rapidisimo_technical_test/core/ui_system/widget/price_with_out_discount_widget.dart';
+import 'package:inter_rapidisimo_technical_test/core/ui_system/widget/rating_bar_indicator_card_widget.dart';
+import 'package:inter_rapidisimo_technical_test/core/ui_system/widget/title_card_widget.dart';
 
 class ProductCardWidget extends StatelessWidget {
   const ProductCardWidget({
@@ -19,6 +18,10 @@ class ProductCardWidget extends StatelessWidget {
     required this.discountedPrice,
     required this.discountPercentage,
     required this.brand,
+    required this.cartQuantity,
+    required this.isCartLoading,
+    required this.onAddToCart,
+    required this.onRemoveFromCart,
   });
 
   final String imageUrl;
@@ -28,6 +31,10 @@ class ProductCardWidget extends StatelessWidget {
   final double discountedPrice;
   final double discountPercentage;
   final String brand;
+  final int cartQuantity;
+  final bool isCartLoading;
+  final VoidCallback onAddToCart;
+  final VoidCallback onRemoveFromCart;
 
   @override
   Widget build(BuildContext context) {
@@ -47,20 +54,27 @@ class ProductCardWidget extends StatelessWidget {
             TitleCardWidget(title: title),
             const SizedBox(height: 4),
             RatingBarIndicatorCardWidget(rating: rating),
-            const SizedBox(height: 8),
-            Row(
-              children: [
-                PriceWithOutDiscountWidget(price: price),
-                const SizedBox(width: 8),
-                DiscountTagWidget(discountPercentage: discountPercentage),
-              ],
-            ),
-            const SizedBox(height: 4),
+            if (discountPercentage.round() > 0) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  PriceWithOutDiscountWidget(price: price),
+                  const SizedBox(width: 8),
+                  DiscountTagWidget(discountPercentage: discountPercentage),
+                ],
+              ),
+              const SizedBox(height: 4),
+            ],
             PriceWithDicountWidget(discountedPrice: discountedPrice),
             const SizedBox(height: 6),
             BrandTextWidget(brand: brand),
             const Spacer(),
-            BuyButtonWidget(),
+            CartControlWidget(
+              quantity: cartQuantity,
+              isLoading: isCartLoading,
+              onAdd: onAddToCart,
+              onRemove: onRemoveFromCart,
+            ),
           ],
         ),
       ),
