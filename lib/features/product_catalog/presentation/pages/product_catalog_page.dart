@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:inter_rapidisimo_technical_test/core/router/list_routes.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/events/product_catalog_event.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/providers/product_catalog_provider.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/states/product_catalog_state.dart';
@@ -58,6 +60,15 @@ class _ProductCatalogPageState extends ConsumerState<ProductCatalogPage> {
                 .read(productCatalogProvider.notifier)
                 .add(const RefreshProductCatalog()),
             onEvent: ref.read(productCatalogProvider.notifier).add,
+            onProductTap: (productId) async {
+              await context.pushNamed(
+                ListRoutes.productDetail.name,
+                pathParameters: {'id': productId.toString()},
+              );
+              ref
+                  .read(productCatalogProvider.notifier)
+                  .add(const ReloadCart());
+            },
           ),
           ProductCatalogError() => _ErrorBody(
             message: state.message,
@@ -94,12 +105,14 @@ class _SuccessBody extends StatelessWidget {
     required this.scrollController,
     required this.onRefresh,
     required this.onEvent,
+    required this.onProductTap,
   });
 
   final ProductCatalogSuccess state;
   final ScrollController scrollController;
   final VoidCallback onRefresh;
   final void Function(ProductCatalogEvent) onEvent;
+  final void Function(int productId) onProductTap;
 
   @override
   Widget build(BuildContext context) {
@@ -125,6 +138,7 @@ class _SuccessBody extends StatelessWidget {
                   isCartLoading: state.isProductLoading(product.id),
                   onAddToCart: () => onEvent(AddToCart(product)),
                   onRemoveFromCart: () => onEvent(RemoveFromCart(product)),
+                  onTap: () => onProductTap(product.id),
                 );
               }, childCount: state.products.length),
               gridDelegate: _gridDelegate,

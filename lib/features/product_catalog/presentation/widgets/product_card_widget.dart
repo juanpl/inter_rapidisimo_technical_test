@@ -22,6 +22,7 @@ class ProductCardWidget extends StatelessWidget {
     required this.isCartLoading,
     required this.onAddToCart,
     required this.onRemoveFromCart,
+    required this.onTap,
   });
 
   final String imageUrl;
@@ -35,47 +36,51 @@ class ProductCardWidget extends StatelessWidget {
   final bool isCartLoading;
   final VoidCallback onAddToCart;
   final VoidCallback onRemoveFromCart;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: ImageProductWidget(imageUrl: imageUrl),
-            ),
-            const SizedBox(height: 8),
-            TitleCardWidget(title: title),
-            const SizedBox(height: 4),
-            RatingBarIndicatorCardWidget(rating: rating),
-            if (discountPercentage.round() > 0) ...[
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  PriceWithOutDiscountWidget(price: price),
-                  const SizedBox(width: 8),
-                  DiscountTagWidget(discountPercentage: discountPercentage),
-                ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: ImageProductWidget(imageUrl: imageUrl),
               ),
+              const SizedBox(height: 8),
+              TitleCardWidget(title: title),
               const SizedBox(height: 4),
+              RatingBarIndicatorCardWidget(rating: rating),
+              if (discountPercentage.round() > 0) ...[
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    PriceWithOutDiscountWidget(price: price),
+                    const SizedBox(width: 8),
+                    DiscountTagWidget(discountPercentage: discountPercentage),
+                  ],
+                ),
+                const SizedBox(height: 4),
+              ],
+              PriceWithDicountWidget(discountedPrice: discountedPrice),
+              const SizedBox(height: 6),
+              BrandTextWidget(brand: brand),
+              const Spacer(),
+              CartControlWidget(
+                quantity: cartQuantity,
+                isLoading: isCartLoading,
+                onAdd: onAddToCart,
+                onRemove: onRemoveFromCart,
+              ),
             ],
-            PriceWithDicountWidget(discountedPrice: discountedPrice),
-            const SizedBox(height: 6),
-            BrandTextWidget(brand: brand),
-            const Spacer(),
-            CartControlWidget(
-              quantity: cartQuantity,
-              isLoading: isCartLoading,
-              onAdd: onAddToCart,
-              onRemove: onRemoveFromCart,
-            ),
-          ],
+          ),
         ),
       ),
     );
