@@ -10,7 +10,7 @@ class AppToolbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: ApplicationColors.thirdBrandColor,
+      backgroundColor: ApplicationColors.fourthBrandColor,
       leading: leading,
       actions: actions,
     );

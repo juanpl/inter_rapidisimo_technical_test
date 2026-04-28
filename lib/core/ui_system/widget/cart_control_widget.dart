@@ -8,12 +8,14 @@ class CartControlWidget extends StatelessWidget {
     required this.isLoading,
     required this.onAdd,
     required this.onRemove,
+    this.addLabel = 'Agregar',
   });
 
   final int quantity;
   final bool isLoading;
   final VoidCallback onAdd;
   final VoidCallback onRemove;
+  final String addLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +38,9 @@ class CartControlWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-          child: const Text(
-            'Agregar',
-            style: TextStyle(
+          child: Text(
+            addLabel,
+            style: const TextStyle(
               fontSize: 12,
               color: Colors.white,
               fontWeight: FontWeight.bold,
