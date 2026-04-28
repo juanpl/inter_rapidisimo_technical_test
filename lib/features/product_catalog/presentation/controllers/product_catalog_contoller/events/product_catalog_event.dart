@@ -29,3 +29,8 @@ class RemoveFromCart extends ProductCatalogEvent {
 class ReloadCart extends ProductCatalogEvent {
   const ReloadCart();
 }
+
+class SearchProducts extends ProductCatalogEvent {
+  const SearchProducts(this.query);
+  final String query;
+}

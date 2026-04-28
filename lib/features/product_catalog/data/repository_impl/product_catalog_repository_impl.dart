@@ -26,4 +26,19 @@ class ProductCatalogRepositoryImpl implements ProductCatalogRepository {
       throw CustomException(message: 'Error inesperado', code: 'UNKNOWN');
     }
   }
+
+  @override
+  Future<ProductCatalogEntity> searchProducts(String query) async {
+    final response = await _productCatalogDatasource.searchProducts(
+      query: query,
+    );
+    try {
+      final productCatalogModel = ProductCatalogModel.fromJson(response);
+      return ProductCatalogEntity.fromModel(productCatalogModel);
+    } on CustomException {
+      rethrow;
+    } catch (_) {
+      throw CustomException(message: 'Error inesperado', code: 'UNKNOWN');
+    }
+  }
 }
