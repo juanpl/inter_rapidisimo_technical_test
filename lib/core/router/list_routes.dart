@@ -1,4 +1,4 @@
-enum ListRoutes { productCatalog, cart }
+enum ListRoutes { productCatalog, cart, productDetail }
 
 extension RouteExtension on ListRoutes {
   String get path {
@@ -7,6 +7,8 @@ extension RouteExtension on ListRoutes {
         return '/product_catalog';
       case ListRoutes.cart:
         return '/cart';
+      case ListRoutes.productDetail:
+        return '/product/:id';
     }
   }
 }
