@@ -9,6 +9,7 @@ import 'package:inter_rapidisimo_technical_test/features/cart/domain/use_cases/g
 import 'package:inter_rapidisimo_technical_test/features/cart/domain/use_cases/remove_product_from_cart_use_case.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/domain/entities/product_entity.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/domain/use_cases/get_product_catalog_use_case.dart';
+import 'package:inter_rapidisimo_technical_test/features/product_catalog/domain/use_cases/search_products_use_case.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/events/product_catalog_event.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/states/product_catalog_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,6 +40,8 @@ class ProductCatalogNotifier extends Notifier<ProductCatalogState> {
         await _onRemoveFromCart(product);
       case ReloadCart():
         await _onReloadCart();
+      case SearchProducts(:final query):
+        await _onSearchProducts(query);
     }
   }
 
@@ -99,6 +102,27 @@ class ProductCatalogNotifier extends Notifier<ProductCatalogState> {
   Future<void> _onRefresh() async {
     _currentOffset = 0;
     await _onLoad();
+  }
+
+  Future<void> _onSearchProducts(String query) async {
+    if (query.isEmpty) {
+      await _onRefresh();
+      return;
+    }
+    state = const ProductCatalogLoading();
+    try {
+      final catalog = await GetIt.I<SearchProductsUseCase>()(query);
+      final cartProducts = await _fetchCartProducts();
+      state = ProductCatalogSuccess(
+        products: catalog.products,
+        total: catalog.total,
+        hasReachedEnd: true,
+        isSearchMode: true,
+        cartProducts: cartProducts,
+      );
+    } on CustomException catch (e) {
+      state = ProductCatalogError(e.message);
+    }
   }
 
   Future<void> _onReloadCart() async {

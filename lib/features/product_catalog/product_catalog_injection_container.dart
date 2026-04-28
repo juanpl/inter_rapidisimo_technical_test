@@ -3,6 +3,7 @@ import 'package:inter_rapidisimo_technical_test/features/product_catalog/data/da
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/data/repository_impl/product_catalog_repository_impl.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/domain/repositories/product_catalog_repository.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/domain/use_cases/get_product_catalog_use_case.dart';
+import 'package:inter_rapidisimo_technical_test/features/product_catalog/domain/use_cases/search_products_use_case.dart';
 
 final getIt = GetIt.instance;
 
@@ -23,6 +24,10 @@ void productCatalogInjectionContainer(GetIt getIt) {
     getIt.registerSingleton<GetProductCatalogUseCase>(
       GetProductCatalogUseCase(),
     );
+  }
+
+  if (!getIt.isRegistered<SearchProductsUseCase>()) {
+    getIt.registerSingleton<SearchProductsUseCase>(SearchProductsUseCase());
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:inter_rapidisimo_technical_test/core/router/list_routes.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/events/product_catalog_event.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/providers/product_catalog_provider.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/controllers/product_catalog_contoller/states/product_catalog_state.dart';
+import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/widgets/catalog_search_bar_widget.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/widgets/product_card_shimmer_widget.dart';
 import 'package:inter_rapidisimo_technical_test/features/product_catalog/presentation/widgets/product_card_widget.dart';
 
@@ -24,6 +25,7 @@ class ProductCatalogPage extends ConsumerStatefulWidget {
 
 class _ProductCatalogPageState extends ConsumerState<ProductCatalogPage> {
   final _scrollController = ScrollController();
+  final _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -34,6 +36,7 @@ class _ProductCatalogPageState extends ConsumerState<ProductCatalogPage> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -50,33 +53,54 @@ class _ProductCatalogPageState extends ConsumerState<ProductCatalogPage> {
 
     return Scaffold(
       body: SafeArea(
-        child: switch (state) {
-          ProductCatalogInitial() ||
-          ProductCatalogLoading() => const _ShimmerGrid(),
-          ProductCatalogSuccess() => _SuccessBody(
-            state: state,
-            scrollController: _scrollController,
-            onRefresh: () => ref
-                .read(productCatalogProvider.notifier)
-                .add(const RefreshProductCatalog()),
-            onEvent: ref.read(productCatalogProvider.notifier).add,
-            onProductTap: (productId) async {
-              await context.pushNamed(
-                ListRoutes.productDetail.name,
-                pathParameters: {'id': productId.toString()},
-              );
-              ref
-                  .read(productCatalogProvider.notifier)
-                  .add(const ReloadCart());
-            },
-          ),
-          ProductCatalogError() => _ErrorBody(
-            message: state.message,
-            onRetry: () => ref
-                .read(productCatalogProvider.notifier)
-                .add(const LoadProductCatalog()),
-          ),
-        },
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: CatalogSearchBarWidget(
+                controller: _searchController,
+                onSearch: (query) => ref
+                    .read(productCatalogProvider.notifier)
+                    .add(SearchProducts(query)),
+                onClear: () {
+                  _searchController.clear();
+                  ref
+                      .read(productCatalogProvider.notifier)
+                      .add(const SearchProducts(''));
+                },
+              ),
+            ),
+            Expanded(
+              child: switch (state) {
+                ProductCatalogInitial() ||
+                ProductCatalogLoading() => const _ShimmerGrid(),
+                ProductCatalogSuccess() => _SuccessBody(
+                  state: state,
+                  scrollController: _scrollController,
+                  onRefresh: () => ref
+                      .read(productCatalogProvider.notifier)
+                      .add(const RefreshProductCatalog()),
+                  onEvent: ref.read(productCatalogProvider.notifier).add,
+                  onProductTap: (productId) async {
+                    await context.pushNamed(
+                      ListRoutes.productDetail.name,
+                      pathParameters: {'id': productId.toString()},
+                    );
+                    ref
+                        .read(productCatalogProvider.notifier)
+                        .add(const ReloadCart());
+                  },
+                ),
+                ProductCatalogError() => _ErrorBody(
+                  message: state.message,
+                  onRetry: () => ref
+                      .read(productCatalogProvider.notifier)
+                      .add(const LoadProductCatalog()),
+                ),
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -150,7 +174,7 @@ class _SuccessBody extends StatelessWidget {
                   child: Center(child: CircularProgressIndicator()),
                 ),
               ),
-            if (state.hasReachedEnd)
+            if (state.hasReachedEnd && !state.isSearchMode)
               const SliverToBoxAdapter(
                 child: Padding(
                   padding: EdgeInsets.all(16),

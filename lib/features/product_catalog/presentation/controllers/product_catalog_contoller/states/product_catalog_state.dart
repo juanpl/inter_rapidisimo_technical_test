@@ -19,6 +19,7 @@ class ProductCatalogSuccess extends ProductCatalogState {
     required this.total,
     this.isLoadingMore = false,
     this.hasReachedEnd = false,
+    this.isSearchMode = false,
     this.cartProducts = const [],
     this.loadingProductIds = const {},
   });
@@ -28,6 +29,7 @@ class ProductCatalogSuccess extends ProductCatalogState {
   final int total;
   final bool isLoadingMore;
   final bool hasReachedEnd;
+  final bool isSearchMode;
   final Set<int> loadingProductIds;
 
   int cartQuantity(int productId) =>
@@ -40,6 +42,7 @@ class ProductCatalogSuccess extends ProductCatalogState {
     int? total,
     bool? isLoadingMore,
     bool? hasReachedEnd,
+    bool? isSearchMode,
     List<CartProductEntity>? cartProducts,
     Set<int>? loadingProductIds,
   }) => ProductCatalogSuccess(
@@ -47,6 +50,7 @@ class ProductCatalogSuccess extends ProductCatalogState {
     total: total ?? this.total,
     isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
+    isSearchMode: isSearchMode ?? this.isSearchMode,
     cartProducts: cartProducts ?? this.cartProducts,
     loadingProductIds: loadingProductIds ?? this.loadingProductIds,
   );

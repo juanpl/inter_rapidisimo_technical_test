@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inter_rapidisimo_technical_test/core/ui_system/colors/application_colors.dart';
 
 class CartControlWidget extends StatelessWidget {
   const CartControlWidget({
@@ -29,12 +30,20 @@ class CartControlWidget extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onAdd,
           style: ElevatedButton.styleFrom(
+            backgroundColor: ApplicationColors.primerBrandColor,
             padding: const EdgeInsets.symmetric(vertical: 8),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-          child: const Text('Agregar', style: TextStyle(fontSize: 12)),
+          child: const Text(
+            'Agregar',
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       );
     }
